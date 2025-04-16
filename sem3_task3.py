@@ -32,7 +32,7 @@ class MinHeap:
     def _parent(self, i):
         if (i == 0):
             return 0
-        return (i - 1) // 2 # Integer division
+        return (i - 1) // 2
     
     def _sift_down(self, i):
         n = len(self.heap)
