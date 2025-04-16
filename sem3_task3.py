@@ -17,65 +17,71 @@ class TreeNode:
 class MinHeap:
     def __init__(self):
         self.heap = []
-
-    def push(self, node):
-        self.heap.append(node)
-        self._heapify_up(len(self.heap) - 1)
         
+    def top(self):
+        if not self.heap:
+            return None
+        return self.heap[0]
+    
+    def _left(self, i):
+        return 2*i + 1
+    
+    def _right(self, i):
+        return 2*i + 2
+    
+    def _parent(self, i):
+        if (i == 0):
+            return 0
+        return (i - 1) // 2 # Integer division
+    
+    def _sift_down(self, i):
+        n = len(self.heap)
+        largest = i
+        left = self._left(i)
+        right = self._right(i)
+        if (left < n and self.heap[left] < self.heap[largest]):
+            largest = left
+        if (right < n and self.heap[right] < self.heap[largest]):
+            largest = right
+        if (largest != i):
+            self.heap[i], self.heap[largest] = self.heap[largest], self.heap[i]
+            self._sift_down(largest)
+            
+    def _sift_up(self, index):
+        while index > 0 and self.heap[index] < self.heap[self._parent(index)]:
+            self.heap[index], self.heap[self._parent(index)] = self.heap[self._parent(index)], self.heap[index]
+            index = self._parent(index)            
+            
+            
+    def push(self, data):
+        self.heap.append(data)
+        self._sift_up(len(self.heap) - 1)
+
+            
     def pop(self):
         if not self.heap:
             return None
-
         if len(self.heap) == 1:
             return self.heap.pop()
-
+        
         root = self.heap[0]
         self.heap[0] = self.heap.pop()
-        self._heapify_down(0)
+        self._sift_down(0)
         return root
-
-    def __len__(self):
-        return len(self.heap)
     
     def isEmpty(self):
         return len(self.heap) == 0
-
-    def _heapify_up(self, index):
-        parent_index = (index - 1) // 2
-        while index > 0 and self.heap[index] < self.heap[parent_index]:
-            self.heap[index], self.heap[parent_index] = self.heap[parent_index], self.heap[index]
-            index = parent_index
-            parent_index = (index - 1) // 2
-
-    def _heapify_down(self, index):
-        while True:
-            left_child_index = 2 * index + 1
-            right_child_index = 2 * index + 2
-            smallest = index
-
-            if left_child_index < len(self.heap) and self.heap[left_child_index] < self.heap[smallest]:
-                smallest = left_child_index
-
-            if right_child_index < len(self.heap) and self.heap[right_child_index] < self.heap[smallest]:
-                smallest = right_child_index
-
-            if smallest != index:
-                self.heap[index], self.heap[smallest] = self.heap[smallest], self.heap[index]
-                index = smallest
-            else:
-                break
             
 
 def mergeKSortedArrays(sortedArrays):
     minHeap = MinHeap()
-    for i in range(len(sortedArrays)):
-        for j in range(len(sortedArrays[i])):
-            minHeap.push(sortedArrays[i][j])
+    for arr in sortedArrays:
+        for num in arr:
+            minHeap.push(num)
     mergedArray = []
-    while (len(minHeap) > 0):
+    while not minHeap.isEmpty():
         mergedArray.append(minHeap.pop())
     return mergedArray
-
 
 import unittest
 
