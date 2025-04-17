@@ -8,6 +8,14 @@ class TreeNode:
         self.left = left
         self.right = right
 
+def buildTree(arr, i):
+    if i >= len(arr):
+        return None
+    root = TreeNode(arr[i])
+    root.left = buildTree(arr, 2 * i + 1)
+    root.right = buildTree(arr, 2 * i + 2)
+    return root
+
 def minDepth(root):
     if root == None:
         return 0
