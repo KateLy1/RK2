@@ -3,6 +3,14 @@
 #Необходимо понять, являются ли эти
 #два дерева одинаковыми.
 
+def buildTree(arr, i):
+    if i >= len(arr):
+        return None
+    root = TreeNode(arr[i])
+    root.left = buildTree(arr, 2 * i + 1)
+    root.right = buildTree(arr, 2 * i + 2)
+    return root
+
 def isSameTree(a, b):
     if a == None and b == None:
         return True
