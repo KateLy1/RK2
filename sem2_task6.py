@@ -1,6 +1,14 @@
 #Дано бинарное дерево. Необходимо подсчитать количество
 #зеркальных узлов в нем
 
+def buildTree(arr, i):
+    if i >= len(arr):
+        return None
+    root = TreeNode(arr[i])
+    root.left = buildTree(arr, 2 * i + 1)
+    root.right = buildTree(arr, 2 * i + 2)
+    return root
+
 def dfs(left, right):
     if left == None or right == None:
         return 0
